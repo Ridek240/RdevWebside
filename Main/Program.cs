@@ -1,12 +1,16 @@
 using IndentityShared.Data;
 using IndentityShared.Models;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
+///
+/// Main Side Program
+///
 var builder = WebApplication.CreateBuilder(args);
 
-
-// baza danych Identity
+// DB
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
@@ -15,41 +19,64 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
-
-
-builder.Services.AddRazorPages();
-
-// Cookie wspólne z Module
+// Cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Name = "SharedIdentityCookie";  // obie strony u¿ywaj¹ tej samej cookie
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
+    options.Cookie.Name = "SharedIdentityCookie";
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.Cookie.HttpOnly = false;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
+
+// Razor
+builder.Services.AddRazorPages();
+
+// DataProtection
+builder.Services.AddDataProtection()
+    .SetApplicationName("SharedAuthApp");
+
+// YARP
+builder.Services.AddReverseProxy()
+    .LoadFromMemory(
+        new[]
+        {
+            new Yarp.ReverseProxy.Configuration.RouteConfig
+            {
+                RouteId = "moduleRoute",
+                ClusterId = "moduleCluster",
+                Match = new() { Path = "/DND/{**catch-all}" },
+                Transforms = new List<Dictionary<string, string>>
+                {
+                    new() { { "PathRemovePrefix", "/DND" } }
+                }
+            }
+        },
+        new[]
+        {
+            new Yarp.ReverseProxy.Configuration.ClusterConfig
+            {
+                ClusterId = "moduleCluster",
+                Destinations = new Dictionary<string, Yarp.ReverseProxy.Configuration.DestinationConfig>
+                {
+                    { "destination1", new() { Address = "https://localhost:5003/" } }
+                }
+            }
+        });
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
-// Main Pages
+
 app.MapRazorPages();
 
-// Wszystko pod /module trafia do Module
-app.Map("/DND", moduleApp =>
-{
-    moduleApp.Run(async context =>
-    {
-        using var client = new HttpClient();
-        // tutaj zak³adamy, ¿e Module dzia³a na https://localhost:5003
-        var url = "https://localhost:5003" + context.Request.Path + context.Request.QueryString;
 
-        var resp = await client.GetAsync(url);
-        var content = await resp.Content.ReadAsStringAsync();
-        await context.Response.WriteAsync(content);
-    });
-});
+app.MapReverseProxy();
 
 app.Run();

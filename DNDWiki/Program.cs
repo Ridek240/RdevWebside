@@ -1,36 +1,43 @@
-using Microsoft.EntityFrameworkCore;
-using IndentityShared.Data;
-using IndentityShared.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddDbContext<IdentityDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
-
-
-// Add services to the container.
+// Razor Pages
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
 
-// Dodaj Authentication z tym samym schematem co Main
-builder.Services.AddAuthentication("Identity.Application") // <- schemat Identity z Main
-    .AddCookie("Identity.Application");
+// Authentication – tylko to
+builder.Services.AddAuthentication("Identity.Application")
+    .AddCookie("Identity.Application", options =>
+    {
+        options.Cookie.Name = "SharedIdentityCookie";
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.HttpOnly = false;
+        options.Events.OnRedirectToLogin = context =>
+        {
+            var returnUrl = context.Request.Path + context.Request.QueryString;
+
+            var redirectUrl = "https://localhost:7060/Identity/Account/Login"
+                + "?ReturnUrl=" + Uri.EscapeDataString("/DND" + returnUrl);
+
+            context.Response.Redirect(redirectUrl);
+            return Task.CompletedTask;
+        };
+    });
+
+// Authorization
+builder.Services.AddAuthorization();
+
+// MUSI byæ identyczne jak w Main
+builder.Services.AddDataProtection()
+    .SetApplicationName("SharedAuthApp");
 
 var app = builder.Build();
 
-// Module u¿ywa tego samego cookie co Main
-/*builder.Services.ConfigureApplicationCookie(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.Cookie.Name = "SharedIdentityCookie";
-});*/
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
@@ -42,6 +49,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.MapControllers();
 
 app.Run();
