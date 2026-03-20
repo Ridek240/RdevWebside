@@ -74,9 +74,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapReverseProxy();
 app.MapRazorPages();
 
-
-app.MapReverseProxy();
 
 app.Run();

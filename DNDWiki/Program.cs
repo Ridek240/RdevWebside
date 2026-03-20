@@ -1,10 +1,14 @@
+using DNDWiki.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Razor Pages
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<DNDDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DndConnection")));
 
 // Authentication – tylko to
 builder.Services.AddAuthentication("Identity.Application")

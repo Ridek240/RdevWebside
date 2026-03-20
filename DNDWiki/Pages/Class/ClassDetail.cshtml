@@ -1,0 +1,83 @@
+﻿@page
+@model DNDWiki.Pages.Class.ClassDetailModel
+@{
+}
+@{
+    var grouped = Model.ClassItem.ClassFeatures
+        .GroupBy(f => f.Level)
+        .OrderBy(g => g.Key);
+}
+
+<h3>@Model.ClassItem.Name</h3>
+<a class="btn btn-sm btn-primary" href="/DND/Class/EditClass?ClassId=@Model.ClassItem.Id">
+    Edytuj
+</a>
+<div>@Model.ClassItem.Description</div>
+<table border="1">
+    <tr>
+        <td>HitDie</td>
+        <td>
+            @($"{Model.ClassItem.HitPointDie} per {Model.ClassItem.Name.ToLower()} level")
+        </td>
+    </tr>
+    <tr>
+        <td>Saving Throw Proficiencies</td>
+        <td>
+            @string.Join(", ", Model.ClassItem.SavingThrowProficiencies.Select(x => x.Name))
+        </td>
+    </tr>
+    <tr>
+        <td>Skill Proficiencies</td>
+        <td>
+            @string.Join(", ", Model.ClassItem.SkillProficiencies.Select(x => x.Name))
+        </td>
+    </tr>
+    <tr>
+        <td>Weapon Proficiencies</td>
+        <td>
+            @string.Join(", ", Model.ClassItem.WeaponsProficiencies.Select(x => x.Name))
+        </td>
+    </tr>
+    <tr>
+        <td>Armor Training</td>
+        <td>
+            @string.Join(", ", Model.ClassItem.ArmorProficiencies.Select(x => x.Name))
+        </td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>10</td>
+    </tr>
+    <tr>
+        <td>11</td>
+        <td>12</td>
+    </tr>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Level</th>
+            <th>Features</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in grouped)
+        {
+            <tr>
+                <td>@group.Key</td>
+                <td>
+                    @string.Join(", ", group.Select(f => f.Name))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+        @foreach (var feature in Model.ClassItem.ClassFeatures)
+{
+    <div>
+       <h3>Level @feature.Level: @feature.Name</h3>
+       <div>@feature.Description</div>
+    </div>
+}

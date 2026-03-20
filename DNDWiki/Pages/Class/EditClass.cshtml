@@ -1,0 +1,156 @@
+﻿@page
+@using DNDWiki.Models
+@model DNDWiki.Pages.Class.EditClassModel
+@{
+    ViewData["Title"] = "Edytuj Klasę D&D";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label">Nazwa klasy</label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Źródło</label>
+        <select asp-for="Input.HitDie" class="form-select">
+            @foreach (var src in Enum.GetValues(typeof(Dice)))
+            {
+                <option value="@src">@src</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Description" class="form-label">Opis</label>
+        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Źródło</label>
+        <select asp-for="Input.SourceId" class="form-select" asp-items="@(new SelectList(Model.Sources, "Id", "Name"))">
+            <option value="">-- Wybierz źródło --</option>
+        </select>
+        <span asp-validation-for="Input.SourceId" class="text-danger"></span>
+    </div>
+
+    <h5>Rzuty ratunkowe</h5>
+    @for (int i = 0; i < Model.Input.SavingThrowProficiencies.Count; i++)
+    {
+        <div class="form-check">
+            <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Id" />
+            <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Name" />
+            <input type="checkbox" asp-for="Input.SavingThrowProficiencies[i].Selected" class="form-check-input" />
+            <label class="form-check-label">@Model.Input.SavingThrowProficiencies[i].Name</label>
+        </div>
+    }
+
+    <h5>Umiejętności</h5>
+    @for (int i = 0; i < Model.Input.SkillProficiencies.Count; i++)
+    {
+        <div class="form-check">
+            <input type="hidden" asp-for="Input.SkillProficiencies[i].Id" />
+            <input type="hidden" asp-for="Input.SkillProficiencies[i].Name" />
+            <input type="checkbox" asp-for="Input.SkillProficiencies[i].Selected" class="form-check-input" />
+            <label class="form-check-label">@Model.Input.SkillProficiencies[i].Name</label>
+        </div>
+    }
+
+    <h5>Narzędzia</h5>
+    @for (int i = 0; i < Model.Input.ToolsProficiencies.Count; i++)
+    {
+        <div class="form-check">
+            <input type="hidden" asp-for="Input.ToolsProficiencies[i].Id" />
+            <input type="hidden" asp-for="Input.ToolsProficiencies[i].Name" />
+            <input type="checkbox" asp-for="Input.ToolsProficiencies[i].Selected" class="form-check-input" />
+            <label class="form-check-label">@Model.Input.ToolsProficiencies[i].Name</label>
+        </div>
+    }
+    <h5>Broń</h5>
+    @for (int i = 0; i < Model.Input.WeaponProficiency.Count; i++)
+    {
+        <div class="form-check">
+            <input type="hidden" asp-for="Input.WeaponProficiency[i].Id" />
+            <input type="hidden" asp-for="Input.WeaponProficiency[i].Name" />
+            <input type="checkbox" asp-for="Input.WeaponProficiency[i].Selected" class="form-check-input" />
+            <label class="form-check-label">@Model.Input.WeaponProficiency[i].Name</label>
+        </div>
+    }
+    <h5>Zbroja</h5>
+    @for (int i = 0; i < Model.Input.ArmorTraining.Count; i++)
+    {
+        <div class="form-check">
+            <input type="hidden" asp-for="Input.ArmorTraining[i].Id" />
+            <input type="hidden" asp-for="Input.ArmorTraining[i].Name" />
+            <input type="checkbox" asp-for="Input.ArmorTraining[i].Selected" class="form-check-input" />
+            <label class="form-check-label">@Model.Input.ArmorTraining[i].Name</label>
+        </div>
+    }
+
+
+    <h5>Cechy klasy</h5>
+    <div id="features-container">
+        @for (int i = 0; i < Model.Input.ClassFeatures.Count; i++)
+        {
+            <div class="feature-item mb-2">
+                <input type="number" name="Input.ClassFeatures[@i].Level"
+                       value="@Model.Input.ClassFeatures[i].Level"
+                       placeholder="Poziom" class="form-control mb-1" />
+
+                <input type="text" name="Input.ClassFeatures[@i].Name"
+                       value="@Model.Input.ClassFeatures[i].Name"
+                       placeholder="Nazwa cechy" class="form-control mb-1" />
+
+                <textarea name="Input.ClassFeatures[@i].Description"
+                      placeholder="Opis cechy" class="form-control mb-1">@Model.Input.ClassFeatures[i].Description</textarea>
+
+                <button type="button" class="btn btn-danger btn-sm mt-1" onclick="removeFeature(this)">Usuń</button>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-secondary mt-2" onclick="addFeature()">Dodaj kolejną cechę</button>
+    <button type="submit" class="btn btn-primary mt-3">Zapisz zmiany</button>
+    </form>
+@section Scripts {
+        <script>
+            // Ustawiamy indeks na ilość istniejących cech
+            let featureIndex = @Model.Input.ClassFeatures.Count;
+
+            function addFeature() {
+                const container = document.getElementById("features-container");
+                const div = document.createElement("div");
+                div.classList.add("feature-item", "mb-2");
+                div.innerHTML = `
+                    <input type="number" name="Input.ClassFeatures[${featureIndex}].Level" placeholder="Poziom" class="form-control mb-1" />
+                    <input type="text" name="Input.ClassFeatures[${featureIndex}].Name" placeholder="Nazwa cechy" class="form-control mb-1" />
+                    <textarea name="Input.ClassFeatures[${featureIndex}].Description" placeholder="Opis cechy" class="form-control mb-1"></textarea>
+                    <button type="button" class="btn btn-danger btn-sm mt-1" onclick="removeFeature(this)">Usuń</button>
+                `;
+                container.appendChild(div);
+                featureIndex++;
+            }
+
+            function removeFeature(button) {
+                const featureDiv = button.closest(".feature-item");
+                if (featureDiv) {
+                    featureDiv.remove();
+                }
+            }
+        </script>
+}

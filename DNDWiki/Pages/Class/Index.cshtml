@@ -1,0 +1,33 @@
+﻿@page
+@model DNDWiki.Pages.Class.IndexModel
+@{
+    ViewData["Title"] = "Lista klas D&D";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Classes == null || !Model.Classes.Any())
+{
+    <p>Brak klas do wyświetlenia.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nazwa klasy</th>
+                <th>Źródło</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cls in Model.Classes)
+            {
+                <tr style="cursor:pointer;"
+                    onclick="location.href='/DND/Class/ClassDetail?ClassId=@cls.Id'">
+                    <td>@cls.Name</td>
+                    <td>@cls.Source</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
