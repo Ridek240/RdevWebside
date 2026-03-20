@@ -4,6 +4,7 @@ using DNDWiki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DNDWiki.Migrations
 {
     [DbContext(typeof(DNDDbContext))]
-    partial class DNDDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320131441_init3")]
+    partial class init3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,20 +376,12 @@ namespace DNDWiki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Range")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("School")
                         .HasColumnType("int");
 
                     b.Property<string>("SourceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Target")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -680,31 +675,6 @@ namespace DNDWiki.Migrations
                             b1.Property<int>("SpellsId")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("Scale")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("int");
-
-                            b1.HasKey("SpellsId");
-
-                            b1.ToTable("Spells");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SpellsId");
-                        });
-
-                    b.OwnsOne("DNDWiki.Models.TimeDnd", "Duration", b1 =>
-                        {
-                            b1.Property<int>("SpellsId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Scale")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("int");
-
                             b1.HasKey("SpellsId");
 
                             b1.ToTable("Spells");
@@ -714,9 +684,6 @@ namespace DNDWiki.Migrations
                         });
 
                     b.Navigation("CastingTime")
-                        .IsRequired();
-
-                    b.Navigation("Duration")
                         .IsRequired();
 
                     b.Navigation("Source");

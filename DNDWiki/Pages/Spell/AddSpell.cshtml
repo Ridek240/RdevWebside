@@ -1,0 +1,133 @@
+﻿@page
+@using DNDWiki.Models
+@model DNDWiki.Pages.Spell.AddSpellModel
+@{
+}
+
+<h1>Dodaj czar</h1>
+
+<form method="post">
+
+    <!-- NAZWA -->
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label"></label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <!-- OPIS -->
+    <div class="mb-3">
+        <label asp-for="Input.Description"></label>
+        <textarea asp-for="Input.Description" class="form-control"></textarea>
+    </div>
+    <!-- OPIS -->
+    <div class="mb-3">
+        <label asp-for="Input.Target"></label>
+        <textarea asp-for="Input.Target" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Range"></label>
+        <textarea asp-for="Input.Range" class="form-control"></textarea>
+    </div>
+
+    <!-- LEVEL -->
+    <div class="mb-3">
+        <label asp-for="Input.Level"></label>
+        <input asp-for="Input.Level" type="number" min="0" max="9" class="form-control" />
+    </div>
+
+    <!-- SCHOOL -->
+    <div class="mb-3">
+        <label asp-for="Input.School"></label>
+        <select asp-for="Input.School" class="form-select">
+            @foreach (var school in Enum.GetValues(typeof(SpellSchool)))
+            {
+                <option value="@school">@school</option>
+            }
+        </select>
+    </div>
+
+    <!-- CASTING TIME -->
+    <div class="mb-3">
+        <label>Casting Time</label>
+        <input asp-for="Input.CastingTime.Value" class="form-control mb-1" placeholder="np. 1" />
+        <select asp-for="Input.CastingTime.Scale" class="form-select">
+            @foreach (var school in Enum.GetValues(typeof(TimeScale)))
+            {
+                <option value="@school">@school</option>
+            }
+        </select>
+    </div>
+    <!-- CASTING TIME -->
+    <div class="mb-3">
+        <label>Duration</label>
+        <input asp-for="Input.Duration.Value" class="form-control mb-1" placeholder="np. 1" />
+        <select asp-for="Input.Duration.Scale" class="form-select">
+            @foreach (var school in Enum.GetValues(typeof(TimeScale)))
+            {
+                <option value="@school">@school</option>
+            }
+        </select>
+    </div>
+
+    <!-- COMPONENTY -->
+    <div class="mb-3">
+        <label>Komponenty</label>
+
+        <div class="form-check">
+            <input type="checkbox" asp-for="Input.HasVerbalComponent" class="form-check-input" />
+            <label class="form-check-label">Verbal</label>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" asp-for="Input.HasSomaticComponent" class="form-check-input" />
+            <label class="form-check-label">Somatic</label>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" asp-for="Input.HasMaterialComponent" class="form-check-input" />
+            <label class="form-check-label">Material</label>
+        </div>
+    </div>
+
+    <!-- MATERIAL -->
+    <div class="mb-3">
+        <label>Material</label>
+        <input asp-for="Input.MaterialList" class="form-control" />
+    </div>
+
+    <!-- KLASY -->
+    <div class="mb-3">
+        <label>Klasy</label>
+        @for (int i = 0; i < Model.Input.Classes.Count; i++)
+        {
+            <div class="form-check">
+                <input type="hidden" asp-for="Input.Classes[i].Id" />
+                <input type="hidden" asp-for="Input.Classes[i].Name" />
+
+                <input type="checkbox"
+                       asp-for="Input.Classes[i].Selected"
+                       class="form-check-input" />
+
+                <label class="form-check-label">
+                    @Model.Input.Classes[i].Name
+                </label>
+            </div>
+        }
+    </div>
+
+    <!-- SOURCE -->
+    <div class="mb-3">
+        <label>Źródło</label>
+        <select asp-for="Input.SourceId" class="form-select">
+            <option value="">-- wybierz --</option>
+            @foreach (var src in Model.Sources)
+            {
+                <option value="@src.Id">@src.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj czar</button>
+
+</form>

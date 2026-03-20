@@ -1,0 +1,18 @@
+﻿@page
+@model DNDWiki.Pages.Spell.DetailsModel
+@{
+}
+<h2>@Model.Item.Name</h2>
+<div> @Model.Item.Level level @Model.Item.School</div>
+<div> <strong>Casting Time:</strong> @Model.Item.CastingTime.ToString()</div>
+<div> <strong>Range:</strong> @Model.Item.Range </div>
+<div> <strong>Target:</strong> @Model.Item.Target </div>
+<div>
+    <strong>Components:</strong>
+    @(Model.Item.HasVerbalComponent ? "V " : "")
+    @(Model.Item.HasSomaticComponent ? "S " : "")
+    @(Model.Item.HasMaterialComponent ? "M" : "")
+</div>
+<div> <strong>Duration:</strong> @Model.Item.Duration </div>
+<div> <strong>Classes:</strong> @string.Join(", ", Model.Item.Classes.Select(x => x.Name)) </div>
+<div>@Model.Item.Description</div>

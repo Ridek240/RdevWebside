@@ -4,6 +4,7 @@ using DNDWiki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DNDWiki.Migrations
 {
     [DbContext(typeof(DNDDbContext))]
-    partial class DNDDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320161702_init4")]
+    partial class init4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -680,12 +683,6 @@ namespace DNDWiki.Migrations
                             b1.Property<int>("SpellsId")
                                 .HasColumnType("int");
 
-                            b1.Property<int>("Scale")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("int");
-
                             b1.HasKey("SpellsId");
 
                             b1.ToTable("Spells");
@@ -697,12 +694,6 @@ namespace DNDWiki.Migrations
                     b.OwnsOne("DNDWiki.Models.TimeDnd", "Duration", b1 =>
                         {
                             b1.Property<int>("SpellsId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Scale")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Value")
                                 .HasColumnType("int");
 
                             b1.HasKey("SpellsId");

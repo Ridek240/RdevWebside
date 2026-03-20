@@ -1,0 +1,33 @@
+﻿@page
+@model DNDWiki.Pages.Spell.IndexModel
+@{
+}
+@if (Model.Spells == null || !Model.Spells.Any())
+{
+    <p>Brak klas do wyświetlenia.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Poziom</th>
+                <th>Szkoła</th>
+                <th>Źródło</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cls in Model.Spells)
+            {
+                <tr style="cursor:pointer;"
+                    onclick="location.href='/DND/Spell/Details?Id=@cls.Id'">
+                    <td>@cls.Name</td>
+                    <td>@cls.Level</td>
+                    <td>@cls.School</td>
+                    <td>@cls.Source</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

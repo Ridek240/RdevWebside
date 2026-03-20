@@ -17,6 +17,7 @@ namespace DNDWiki.Data
         public DbSet<ArmorTraining> ArmorTrainings { get; set; }
         public DbSet<WeaponType> WeaponTypes { get; set; }
         public DbSet<ToolType> ToolTypes { get; set; }
+        public DbSet<Spells> Spells { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
