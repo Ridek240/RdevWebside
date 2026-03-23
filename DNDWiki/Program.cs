@@ -22,7 +22,7 @@ builder.Services.AddAuthentication("Identity.Application")
         {
             var returnUrl = context.Request.Path + context.Request.QueryString;
 
-            var redirectUrl = "https://localhost:7060/Identity/Account/Login"
+            var redirectUrl = "https://localhost:5001/Identity/Account/Login"
                 + "?ReturnUrl=" + Uri.EscapeDataString("/DND" + returnUrl);
 
             context.Response.Redirect(redirectUrl);
