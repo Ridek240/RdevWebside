@@ -26,7 +26,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.LogoutPath = "/Identity/Account/Logout";
     options.Cookie.HttpOnly = false;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
     options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
@@ -60,7 +60,7 @@ builder.Services.AddReverseProxy()
                 ClusterId = "moduleCluster",
                 Destinations = new Dictionary<string, Yarp.ReverseProxy.Configuration.DestinationConfig>
                 {
-                    { "destination1", new() { Address = "https://localhost:5003/" } }
+                    { "destination1", new() { Address = "http://module/" } }
                 }
             }
         });

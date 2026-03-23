@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  main:
+    build:
+      context: .
+      dockerfile: Main/Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      - db
+      - module
+
+  module:
+    build:
+      context: .
+      dockerfile: DNDWiki/Dockerfile
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Pass123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
