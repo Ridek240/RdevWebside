@@ -66,6 +66,14 @@ builder.Services.AddReverseProxy()
         });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    // Identity DbContext
+    var identityDb = services.GetRequiredService<IdentityDbContext>();
+    identityDb.Database.Migrate();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

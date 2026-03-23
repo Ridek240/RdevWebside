@@ -38,8 +38,15 @@ builder.Services.AddDataProtection()
     .SetApplicationName("SharedAuthApp");
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-if (app.Environment.IsDevelopment())
+    // Identity DbContext
+    var identityDb = services.GetRequiredService<DNDDbContext>();
+    identityDb.Database.Migrate();
+}
+    if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
