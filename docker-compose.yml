@@ -14,7 +14,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
+      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;Encrypt=False;TrustServerCertificate=True;
 
   module:
     build:
@@ -26,8 +26,8 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
-      - ConnectionStrings__WikiConnection=Server=db;Database=WikiDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
+      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;Encrypt=False;TrustServerCertificate=True;
+      - ConnectionStrings__WikiConnection=Server=db;Database=WikiDb;User=sa;Password=YourStrong!Pass123;Encrypt=False;TrustServerCertificate=True;
 
   db:
     image: mcr.microsoft.com/azure-sql-edge
