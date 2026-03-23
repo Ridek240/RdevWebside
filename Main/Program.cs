@@ -1,7 +1,9 @@
 using IndentityShared.Data;
 using IndentityShared.Models;
+using Main.Areas.Identity.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -36,8 +38,11 @@ builder.Services.AddRazorPages();
 // DataProtection
 builder.Services.AddDataProtection()
     .SetApplicationName("SharedAuthApp");
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 // YARP
+var moduleAddress = builder.Environment.IsDevelopment()
+    ? "https://localhost:5003" // lokalnie modu³ uruchamiasz normalnie
+    : "http://module/";         // w prod / w Docker Compose
 builder.Services.AddReverseProxy()
     .LoadFromMemory(
         new[]
@@ -60,7 +65,7 @@ builder.Services.AddReverseProxy()
                 ClusterId = "moduleCluster",
                 Destinations = new Dictionary<string, Yarp.ReverseProxy.Configuration.DestinationConfig>
                 {
-                    { "destination1", new() { Address = "http://module/" } }
+                    { "destination1", new() { Address = moduleAddress } }
                 }
             }
         });
