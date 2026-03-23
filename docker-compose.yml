@@ -5,23 +5,33 @@ services:
     build:
       context: .
       dockerfile: Main/Dockerfile
+    container_name: main
     ports:
       - "5001:80"
     depends_on:
-      - db
       - module
+      - db
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
 
   module:
     build:
       context: .
       dockerfile: DNDWiki/Dockerfile
+    container_name: module
     depends_on:
       - db
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
+      - ConnectionStrings__WikiConnection=Server=db;Database=WikiDb;User=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;
 
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: db
     environment:
-      SA_PASSWORD: "YourStrong!Pass123"
-      ACCEPT_EULA: "Y"
+      - SA_PASSWORD=YourStrong!Pass123
+      - ACCEPT_EULA=Y
     ports:
       - "1433:1433"
