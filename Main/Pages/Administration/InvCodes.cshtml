@@ -1,0 +1,101 @@
+﻿@page
+@model Main.Pages.Administration.InvCodesModel
+@{
+}
+<h2>Lista tokenów</h2>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Token</th>
+            <th>Liczba użytkowników</th>
+            <th>Aktywny</th>
+            <th>Akcja</th>
+        </tr>
+    </thead>
+    <tbody id="tokens-table-body">
+        @foreach (var t in Model.TokenCounts)
+        {
+            <tr id="token-row-@t.Id">
+                <td>@t.Id</td>
+                <td style="font-family: monospace;">@t.Token</td>
+                <td>@t.UserCount</td>
+                <td class="enabled-status">@((t.IsEnabled ? "Tak" : "Nie"))</td>
+                <td>
+                    <button onclick="toggleEnabled(@t.Id, this)">
+                        @(t.IsEnabled ? "Wyłącz" : "Włącz")
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form method="post" id="csrf-form">
+    @Html.AntiForgeryToken()
+</form>
+<button onclick="addNewToken()">Dodaj nowy token</button>
+
+<script>
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    async function toggleEnabled(id, btn) {
+        const url = '/Administration/InvCodes?handler=ToggleEnabled&id=' + id;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': token
+            }
+        });
+        debugger
+        if (response.ok) {
+            const data = await response.json();
+            debugger
+            // Zmieniamy tekst w tabeli
+            const row = document.getElementById(`token-row-${data.id}`);
+            const statusCell = row.querySelector('.enabled-status');
+            statusCell.textContent = data.isEnabled ? "Tak" : "Nie";
+
+            // Zmieniamy tekst przycisku
+            btn.textContent = data.isEnabled ? "Wyłącz" : "Włącz";
+        } else {
+            alert("Błąd przy zmianie stanu tokena");
+        }
+    }
+
+        async function addNewToken() {
+        try {
+            const url = '/Administration/InvCodes?handler=AddRandomToken';
+                    const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': token
+            }
+        });
+        debugger
+            if (!response.ok) throw new Error("Błąd serwera");
+
+            const data = await response.json();
+
+            // Dodajemy nowy wiersz do tabeli
+            const tbody = document.getElementById('tokens-table-body');
+            const row = document.createElement('tr');
+            row.id = `token-row-${data.id}`;
+    row.innerHTML = `
+        <td>${data.id}</td>
+        <td style="font-family: monospace;">${data.token}</td>
+        <td>0</td>
+        <td class="enabled-status">${data.isEnabled ? "Tak" : "Nie"}</td>
+        <td>
+            <button onclick="toggleEnabled(${data.id}, this)">
+                ${data.isEnabled ? "Wyłącz" : "Włącz"}
+            </button>
+        </td>
+    `;
+            tbody.appendChild(row);
+
+        } catch (err) {
+            alert("Nie udało się dodać tokena: " + err.message);
+        }
+    }
+</script>

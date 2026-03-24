@@ -12,5 +12,7 @@ namespace IndentityShared.Models
         public string Token { get; set; } = null!;
 
         public bool IsEnabled { get; set; } = true;
+
+        public List<ApplicationUser> InvitedUsers { get; set; } = new();
     }
 }

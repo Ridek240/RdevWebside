@@ -21,6 +21,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
 // Cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -78,6 +82,42 @@ using (var scope = app.Services.CreateScope())
     // Identity DbContext
     var identityDb = services.GetRequiredService<IdentityDbContext>();
     identityDb.Database.Migrate();
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    var roleExists = await roleManager.RoleExistsAsync("Admin");
+    if (!roleExists)
+    {
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+        await roleManager.CreateAsync(new IdentityRole("Developer"));
+        await roleManager.CreateAsync(new IdentityRole("User"));
+    }
+    var AdminUser = await userManager.FindByNameAsync("Admin");
+    if(AdminUser == null)
+    {
+        var user = new ApplicationUser
+        {
+            UserName = "admin",
+            Email = "admin@example.com",
+            EmailConfirmed = true
+        };
+
+        // Tworzenie u¿ytkownika z has³em
+        var result = await userManager.CreateAsync(user, "P@ssw0rd123!");
+        if (result.Succeeded)
+        {
+            // Mo¿esz tu dodaæ role, np. admin
+            await userManager.AddToRoleAsync(user, "Admin");
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine(error.Description);
+            }
+        }
+    }
 }
 
 app.UseHttpsRedirection();

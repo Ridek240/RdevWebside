@@ -126,7 +126,7 @@ namespace Main.Areas.Identity.Pages.Account
                 var tokenInDb = await _context.InviteTokens
                 .FirstOrDefaultAsync(t => t.Token == Input.InviteToken);
 
-                if (tokenInDb == null)
+                if (tokenInDb == null || !tokenInDb.IsEnabled)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid invite token.");
                     return Page();
@@ -134,7 +134,7 @@ namespace Main.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     UserName = Input.Login,
-                    InviteToken = Input.InviteToken
+                    InviteToken = tokenInDb
                 };
 
 

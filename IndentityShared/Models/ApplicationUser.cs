@@ -9,6 +9,6 @@ namespace IndentityShared.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public string? InviteToken {  get; set; }
+        public InviteToken? InviteToken {  get; set; }
     }
 }
