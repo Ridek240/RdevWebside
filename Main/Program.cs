@@ -98,13 +98,13 @@ using (var scope = app.Services.CreateScope())
     {
         var user = new ApplicationUser
         {
-            UserName = "admin",
+            UserName = "Admin",
             Email = "admin@example.com",
             EmailConfirmed = true
         };
 
         // Tworzenie u¿ytkownika z has³em
-        var result = await userManager.CreateAsync(user, "P@ssw0rd123!");
+        var result = await userManager.CreateAsync(user, "Admin1!");
         if (result.Succeeded)
         {
             // Mo¿esz tu dodaæ role, np. admin

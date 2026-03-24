@@ -2,6 +2,9 @@
 @model DNDWiki.Pages.Spell.IndexModel
 @{
 }
+<a class="btn btn-sm btn-primary" href="/DND/Spell/AddSpell">
+    Add
+</a>
 @if (Model.Spells == null || !Model.Spells.Any())
 {
     <p>Brak klas do wyświetlenia.</p>

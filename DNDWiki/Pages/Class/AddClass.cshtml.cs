@@ -1,11 +1,14 @@
 using DNDWiki.Data;
 using DNDWiki.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace DNDWiki.Pages.Class
 {
+    [Authorize]
     public class AddClassModel : PageModel
     {
         #region InputModels
@@ -20,6 +23,8 @@ namespace DNDWiki.Pages.Class
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public int AbilityId { get; set; }
+            public string AbilityName { get; set; }
             public bool Selected { get; set; }
         }
 
@@ -52,6 +57,7 @@ namespace DNDWiki.Pages.Class
 
             [Required]
             public string SourceId { get; set; }
+            public Dice HitDie { get; set; }
 
             public List<AbilityInputModel> SavingThrowProficiencies { get; set; } = new();
             public List<SkillInputModel> SkillProficiencies { get; set; } = new();
@@ -82,8 +88,8 @@ namespace DNDWiki.Pages.Class
             Input.ToolsProficiencies = _context.ToolTypes
                  .Select(t => new ToolInputModel { Id = t.Id, Name = t.Name, Selected = false })
                  .ToList();
-            Input.SkillProficiencies = _context.Skills
-                .Select(s => new SkillInputModel { Id = s.Id, Name = s.Name, Selected = false })
+            Input.SkillProficiencies = _context.Skills.Include(x => x.Ability)
+                .Select(s => new SkillInputModel { Id = s.Id, Name = s.Name, AbilityId = s.AbilityId, AbilityName = s.Ability.Name, Selected = false })
                 .ToList();
             Input.SavingThrowProficiencies = _context.Abilities
                 .Select(a => new AbilityInputModel { Id = a.Id, Name = a.Name, Selected = false })
@@ -134,7 +140,7 @@ namespace DNDWiki.Pages.Class
                 ToolsProficiencies = ToolsProficiencies,
                 WeaponsProficiencies = WeaponProf,
                 ArmorProficiencies = ArmorTraining,
-
+                HitPointDie = Input.HitDie,
                 ClassFeatures = classFeatures
             };
 

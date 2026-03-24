@@ -1,0 +1,117 @@
+﻿@page
+@model DNDWiki.Pages.Species.AddSpeciesModel
+@{
+}
+<h1>@ViewData["Title"]</h1>
+
+<!-- Walidacja globalna -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Źródło</label>
+        <select asp-for="Input.SourceId" class="form-select" asp-items="@(new SelectList(Model.Sources, "Id", "Name"))">
+            <option value="">-- Wybierz źródło --</option>
+        </select>
+        <span asp-validation-for="Input.SourceId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label">Nazwa klasy</label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Description" class="form-label">Opis</label>
+        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Size</label>
+
+        <div class="d-flex">
+            @for (int i = 0; i < Model.Input.CreatureSizes.Count; i++)
+            {
+                <div class="flex-fill">
+                    <div class="form-check">
+                        <input type="hidden" asp-for="Input.CreatureSizes[i].Name" />
+                        <input type="hidden" asp-for="Input.CreatureSizes[i].Id" />
+                        <input type="checkbox"
+                               asp-for="Input.CreatureSizes[i].Selected"
+                               class="form-check-input" />
+                        <label class="form-check-label">
+                            @Model.Input.CreatureSizes[i].Name
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Speed"></label>
+        <input asp-for="Input.Speed" type="number" min="0" max="1000" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Types</label>
+
+        @for (int i = 0; i < Model.Input.CreatureType.Count; i++)
+        {
+            <div class="form-check">
+                <input type="hidden" asp-for="Input.CreatureType[i].Name" />
+                <input type="hidden" asp-for="Input.CreatureType[i].Id" />
+                <input type="checkbox"
+                       asp-for="Input.CreatureType[i].Selected"
+                       class="form-check-input" />
+                <label class="form-check-label">@Model.Input.CreatureType[i].Name</label>
+            </div>
+        }
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Cechy klasy</label>
+        <div id="features-container">
+            <div class="feature-item mb-2">
+                <input type="number" name="Input.CreatureTraits[0].Level" placeholder="Poziom" class="form-control mb-1" />
+                <input type="text" name="Input.CreatureTraits[0].Name" placeholder="Nazwa cechy" class="form-control mb-1" />
+                <textarea name="Input.CreatureTraits[0].Description" placeholder="Opis cechy" class="form-control mb-1"></textarea>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary mt-2" onclick="addFeature()">Dodaj kolejną cechę</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj klasę</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let featureIndex = 1;
+
+        function addFeature() {
+            const container = document.getElementById("features-container");
+            const div = document.createElement("div");
+            div.classList.add("feature-item", "mb-2");
+            div.innerHTML = `
+                <input type="number" name="Input.ClassFeatures[${featureIndex}].Level" placeholder="Poziom" class="form-control mb-1" />
+                <input type="text" name="Input.ClassFeatures[${featureIndex}].Name" placeholder="Nazwa cechy" class="form-control mb-1" />
+                <textarea name="Input.ClassFeatures[${featureIndex}].Description" placeholder="Opis cechy" class="form-control mb-1"></textarea>
+            `;
+            container.appendChild(div);
+            featureIndex++;
+        }
+    </script>
+}

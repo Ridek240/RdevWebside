@@ -52,4 +52,18 @@ namespace DNDWiki.Models
         public string Name { get; set; }
     }
 
+    public class CreatureType
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+    }
+
+    public class CreatureSize
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+    }
+
 }

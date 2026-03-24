@@ -5,14 +5,14 @@
 namespace DNDWiki.Migrations
 {
     /// <inheritdoc />
-    public partial class Update2 : Migration
+    public partial class init2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "HitPointDie",
-                table: "DndClasses",
+                name: "Speed",
+                table: "Species",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -22,8 +22,8 @@ namespace DNDWiki.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "HitPointDie",
-                table: "DndClasses");
+                name: "Speed",
+                table: "Species");
         }
     }
 }

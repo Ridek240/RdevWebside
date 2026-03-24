@@ -22,6 +22,13 @@
 
 <form method="post">
     <div class="mb-3">
+        <label class="form-label">Źródło</label>
+        <select asp-for="Input.SourceId" class="form-select" asp-items="@(new SelectList(Model.Sources, "Id", "Name"))">
+            <option value="">-- Wybierz źródło --</option>
+        </select>
+        <span asp-validation-for="Input.SourceId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
         <label asp-for="Input.Name" class="form-label">Nazwa klasy</label>
         <input asp-for="Input.Name" class="form-control" />
         <span asp-validation-for="Input.Name" class="text-danger"></span>
@@ -32,47 +39,89 @@
         <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
         <span asp-validation-for="Input.Description" class="text-danger"></span>
     </div>
-
     <div class="mb-3">
-        <label class="form-label">Źródło</label>
-        <select asp-for="Input.SourceId" class="form-select" asp-items="@(new SelectList(Model.Sources, "Id", "Name"))">
-            <option value="">-- Wybierz źródło --</option>
+        <label class="form-label">HitDie</label>
+        <select asp-for="Input.HitDie" class="form-select">
+            @foreach (var src in Enum.GetValues(typeof(Dice)))
+            {
+                <option value="@src">@src</option>
+            }
         </select>
-        <span asp-validation-for="Input.SourceId" class="text-danger"></span>
     </div>
-
 
     <div class="mb-3">
         <label class="form-label">Rzuty ratunkowe</label>
-        @for (int i = 0; i < Model.Input.SavingThrowProficiencies.Count; i++)
-        {
-            <div class="form-check">
-                <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Name"/>
-                <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Id"/>
-                <input type="checkbox"
-                       asp-for="Input.SavingThrowProficiencies[i].Selected"
-                       class="form-check-input" />
-                <label class="form-check-label">@Model.Input.SavingThrowProficiencies[i].Name</label>
-            </div>
-        }
+
+        <div class="d-flex">
+            @for (int i = 0; i < Model.Input.SavingThrowProficiencies.Count; i++)
+            {
+                <div class="flex-fill">
+                    <div class="form-check">
+                        <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Name" />
+                        <input type="hidden" asp-for="Input.SavingThrowProficiencies[i].Id" />
+                        <input type="checkbox"
+                               asp-for="Input.SavingThrowProficiencies[i].Selected"
+                               class="form-check-input" />
+                        <label class="form-check-label">
+                            @Model.Input.SavingThrowProficiencies[i].Name
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
     <div class="mb-3">
-        <label class="form-label">Rzuty ratunkowe</label>
-        @for (int i = 0; i < Model.Input.SkillProficiencies.Count; i++)
-        {
-            <div class="form-check">
-                <input type="hidden" asp-for="Input.SkillProficiencies[i].Name" />
-                <input type="hidden" asp-for="Input.SkillProficiencies[i].Id" />
-                <input type="checkbox"
-                       asp-for="Input.SkillProficiencies[i].Selected"
-                       class="form-check-input" />
-                <label class="form-check-label">@Model.Input.SkillProficiencies[i].Name</label>
-            </div>
-        }
+        <label class="form-label">Umiejętności</label>
+
+        <div class="d-flex">
+            @{
+                // Lista unikalnych Ability
+                var abilities = Model.Input.SkillProficiencies
+                .Select(x => new { x.AbilityId, x.AbilityName })
+                .Distinct()
+                .ToList();
+            }
+
+            @foreach (var ability in abilities)
+            {
+                <div class="flex-fill border rounded p-2 mx-1">
+
+                    <!-- Nazwa Ability -->
+                    <strong class="d-block text-center mb-2">
+                        @ability.AbilityName
+                    </strong>
+
+                    <!-- Skille dla tej Ability -->
+                    @for (int i = 0; i < Model.Input.SkillProficiencies.Count; i++)
+                    {
+                        var skill = Model.Input.SkillProficiencies[i];
+
+                        if (skill.AbilityId == ability.AbilityId)
+                        {
+                            <div class="form-check">
+                                @* ZAWSZE używamy asp-for, żeby binding działał *@
+                                <input type="hidden" asp-for="Input.SkillProficiencies[i].Name" />
+                                <input type="hidden" asp-for="Input.SkillProficiencies[i].Id" />
+                                <input type="hidden" asp-for="Input.SkillProficiencies[i].AbilityName" />
+                                <input type="hidden" asp-for="Input.SkillProficiencies[i].AbilityId" />
+
+
+                                <input type="checkbox"
+                                       asp-for="Input.SkillProficiencies[i].Selected"
+                                       class="form-check-input" />
+
+                                <label class="form-check-label">@skill.Name</label>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">ToolsProficiencies</label>
+        <label class="form-label">Tools Proficiencies</label>
+
         @for (int i = 0; i < Model.Input.ToolsProficiencies.Count; i++)
         {
             <div class="form-check">
@@ -85,33 +134,42 @@
             </div>
         }
     </div>
+
     <div class="mb-3">
-        <label class="form-label">ArmorTraining</label>
-        @for (int i = 0; i < Model.Input.ArmorTraining.Count; i++)
-        {
-            <div class="form-check">
-                <input type="hidden" asp-for="Input.ArmorTraining[i].Name" />
-                <input type="hidden" asp-for="Input.ArmorTraining[i].Id" />
-                <input type="checkbox"
-                       asp-for="Input.ArmorTraining[i].Selected"
-                       class="form-check-input" />
-                <label class="form-check-label">@Model.Input.ArmorTraining[i].Name</label>
-            </div>
-        }
+        <label class="form-label">Armor Training</label>
+        <div class="d-flex">
+            @for (int i = 0; i < Model.Input.ArmorTraining.Count; i++)
+            {
+                <div class="flex-fill">
+                    <div class="form-check">
+                        <input type="hidden" asp-for="Input.ArmorTraining[i].Name" />
+                        <input type="hidden" asp-for="Input.ArmorTraining[i].Id" />
+                        <input type="checkbox"
+                               asp-for="Input.ArmorTraining[i].Selected"
+                               class="form-check-input" />
+                        <label class="form-check-label">@Model.Input.ArmorTraining[i].Name</label>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
     <div class="mb-3">
-        <label class="form-label">WeaponProficiency</label>
-        @for (int i = 0; i < Model.Input.WeaponProficiency.Count; i++)
-        {
-            <div class="form-check">
-                <input type="hidden" asp-for="Input.WeaponProficiency[i].Name" />
-                <input type="hidden" asp-for="Input.WeaponProficiency[i].Id" />
-                <input type="checkbox"
-                       asp-for="Input.WeaponProficiency[i].Selected"
-                       class="form-check-input" />
-                <label class="form-check-label">@Model.Input.WeaponProficiency[i].Name</label>
-            </div>
-        }
+        <label class="form-label">Weapon Proficiency</label>
+        <div class="d-flex">
+            @for (int i = 0; i < Model.Input.WeaponProficiency.Count; i++)
+            {
+                <div class="flex-fill">
+                    <div class="form-check">
+                        <input type="hidden" asp-for="Input.WeaponProficiency[i].Name" />
+                        <input type="hidden" asp-for="Input.WeaponProficiency[i].Id" />
+                        <input type="checkbox"
+                               asp-for="Input.WeaponProficiency[i].Selected"
+                               class="form-check-input" />
+                        <label class="form-check-label">@Model.Input.WeaponProficiency[i].Name</label>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 
     <div class="mb-3">

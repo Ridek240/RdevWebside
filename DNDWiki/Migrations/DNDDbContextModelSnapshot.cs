@@ -22,6 +22,66 @@ namespace DNDWiki.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AbilityDndClass", b =>
+                {
+                    b.Property<int>("DndClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SavingThrowProficienciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndClassId", "SavingThrowProficienciesId");
+
+                    b.HasIndex("SavingThrowProficienciesId");
+
+                    b.ToTable("AbilityDndClass");
+                });
+
+            modelBuilder.Entity("ArmorTrainingDndClass", b =>
+                {
+                    b.Property<int>("ArmorProficienciesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DndClassId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArmorProficienciesId", "DndClassId");
+
+                    b.HasIndex("DndClassId");
+
+                    b.ToTable("ArmorTrainingDndClass");
+                });
+
+            modelBuilder.Entity("CreatureSizeSpecies", b =>
+                {
+                    b.Property<int>("CreatureSizesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpeciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CreatureSizesId", "SpeciesId");
+
+                    b.HasIndex("SpeciesId");
+
+                    b.ToTable("CreatureSizeSpecies");
+                });
+
+            modelBuilder.Entity("CreatureTypeSpecies", b =>
+                {
+                    b.Property<int>("CreatureTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpeciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CreatureTypesId", "SpeciesId");
+
+                    b.HasIndex("SpeciesId");
+
+                    b.ToTable("CreatureTypeSpecies");
+                });
+
             modelBuilder.Entity("DNDWiki.Models.Ability", b =>
                 {
                     b.Property<int>("Id")
@@ -30,16 +90,11 @@ namespace DNDWiki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DndClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndClassId");
 
                     b.ToTable("Abilities");
 
@@ -84,16 +139,11 @@ namespace DNDWiki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DndClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndClassId");
 
                     b.ToTable("ArmorTrainings");
 
@@ -149,6 +199,144 @@ namespace DNDWiki.Migrations
                     b.ToTable("ClassFeature");
                 });
 
+            modelBuilder.Entity("DNDWiki.Models.CreatureSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CreatureSizes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Tiny"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Small"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Large"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Huge"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Gargantuan"
+                        });
+                });
+
+            modelBuilder.Entity("DNDWiki.Models.CreatureType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CreatureTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Aberration"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Beast"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Celestial"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Construct"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Dragon"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Elemental"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Fey"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Fiend"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Giant"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Humanoid"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Monstrosity"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Ooze"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Plant"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Undead"
+                        });
+                });
+
             modelBuilder.Entity("DNDWiki.Models.DndClass", b =>
                 {
                     b.Property<int>("Id")
@@ -171,14 +359,9 @@ namespace DNDWiki.Migrations
                     b.Property<string>("SourceId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("SpellsId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SourceId");
-
-                    b.HasIndex("SpellsId");
 
                     b.ToTable("DndClasses");
                 });
@@ -194,9 +377,6 @@ namespace DNDWiki.Migrations
                     b.Property<int>("AbilityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DndClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,8 +384,6 @@ namespace DNDWiki.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AbilityId");
-
-                    b.HasIndex("DndClassId");
 
                     b.ToTable("Skills");
 
@@ -341,6 +519,42 @@ namespace DNDWiki.Migrations
                         });
                 });
 
+            modelBuilder.Entity("DNDWiki.Models.Species", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypicalSize")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypicalWeight")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("Species");
+                });
+
             modelBuilder.Entity("DNDWiki.Models.Spells", b =>
                 {
                     b.Property<int>("Id")
@@ -403,16 +617,11 @@ namespace DNDWiki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DndClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndClassId");
 
                     b.ToTable("ToolTypes");
 
@@ -592,16 +801,11 @@ namespace DNDWiki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DndClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndClassId");
 
                     b.ToTable("WeaponTypes");
 
@@ -618,18 +822,124 @@ namespace DNDWiki.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DNDWiki.Models.Ability", b =>
+            modelBuilder.Entity("DndClassSkill", b =>
                 {
-                    b.HasOne("DNDWiki.Models.DndClass", null)
-                        .WithMany("SavingThrowProficiencies")
-                        .HasForeignKey("DndClassId");
+                    b.Property<int>("DndClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillProficienciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndClassId", "SkillProficienciesId");
+
+                    b.HasIndex("SkillProficienciesId");
+
+                    b.ToTable("DndClassSkill");
                 });
 
-            modelBuilder.Entity("DNDWiki.Models.ArmorTraining", b =>
+            modelBuilder.Entity("DndClassSpells", b =>
+                {
+                    b.Property<int>("ClassesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpellsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassesId", "SpellsId");
+
+                    b.HasIndex("SpellsId");
+
+                    b.ToTable("DndClassSpells");
+                });
+
+            modelBuilder.Entity("DndClassToolType", b =>
+                {
+                    b.Property<int>("DndClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToolsProficienciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndClassId", "ToolsProficienciesId");
+
+                    b.HasIndex("ToolsProficienciesId");
+
+                    b.ToTable("DndClassToolType");
+                });
+
+            modelBuilder.Entity("DndClassWeaponType", b =>
+                {
+                    b.Property<int>("DndClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeaponsProficienciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndClassId", "WeaponsProficienciesId");
+
+                    b.HasIndex("WeaponsProficienciesId");
+
+                    b.ToTable("DndClassWeaponType");
+                });
+
+            modelBuilder.Entity("AbilityDndClass", b =>
                 {
                     b.HasOne("DNDWiki.Models.DndClass", null)
-                        .WithMany("ArmorProficiencies")
-                        .HasForeignKey("DndClassId");
+                        .WithMany()
+                        .HasForeignKey("DndClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.Ability", null)
+                        .WithMany()
+                        .HasForeignKey("SavingThrowProficienciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ArmorTrainingDndClass", b =>
+                {
+                    b.HasOne("DNDWiki.Models.ArmorTraining", null)
+                        .WithMany()
+                        .HasForeignKey("ArmorProficienciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.DndClass", null)
+                        .WithMany()
+                        .HasForeignKey("DndClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CreatureSizeSpecies", b =>
+                {
+                    b.HasOne("DNDWiki.Models.CreatureSize", null)
+                        .WithMany()
+                        .HasForeignKey("CreatureSizesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.Species", null)
+                        .WithMany()
+                        .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CreatureTypeSpecies", b =>
+                {
+                    b.HasOne("DNDWiki.Models.CreatureType", null)
+                        .WithMany()
+                        .HasForeignKey("CreatureTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.Species", null)
+                        .WithMany()
+                        .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DNDWiki.Models.ClassFeature", b =>
@@ -645,10 +955,6 @@ namespace DNDWiki.Migrations
                         .WithMany()
                         .HasForeignKey("SourceId");
 
-                    b.HasOne("DNDWiki.Models.Spells", null)
-                        .WithMany("Classes")
-                        .HasForeignKey("SpellsId");
-
                     b.Navigation("Source");
                 });
 
@@ -660,11 +966,50 @@ namespace DNDWiki.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DNDWiki.Models.DndClass", null)
-                        .WithMany("SkillProficiencies")
-                        .HasForeignKey("DndClassId");
-
                     b.Navigation("Ability");
+                });
+
+            modelBuilder.Entity("DNDWiki.Models.Species", b =>
+                {
+                    b.HasOne("DNDWiki.Models.Source", "Source")
+                        .WithMany()
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("DNDWiki.Models.CreatureTraits", "Traits", b1 =>
+                        {
+                            b1.Property<int>("SpeciesId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int?>("Level")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("SpeciesId", "Id");
+
+                            b1.ToTable("CreatureTraits");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SpeciesId");
+                        });
+
+                    b.Navigation("Source");
+
+                    b.Navigation("Traits");
                 });
 
             modelBuilder.Entity("DNDWiki.Models.Spells", b =>
@@ -722,38 +1067,69 @@ namespace DNDWiki.Migrations
                     b.Navigation("Source");
                 });
 
-            modelBuilder.Entity("DNDWiki.Models.ToolType", b =>
+            modelBuilder.Entity("DndClassSkill", b =>
                 {
                     b.HasOne("DNDWiki.Models.DndClass", null)
-                        .WithMany("ToolsProficiencies")
-                        .HasForeignKey("DndClassId");
+                        .WithMany()
+                        .HasForeignKey("DndClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillProficienciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("DNDWiki.Models.WeaponType", b =>
+            modelBuilder.Entity("DndClassSpells", b =>
                 {
                     b.HasOne("DNDWiki.Models.DndClass", null)
-                        .WithMany("WeaponsProficiencies")
-                        .HasForeignKey("DndClassId");
+                        .WithMany()
+                        .HasForeignKey("ClassesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.Spells", null)
+                        .WithMany()
+                        .HasForeignKey("SpellsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DndClassToolType", b =>
+                {
+                    b.HasOne("DNDWiki.Models.DndClass", null)
+                        .WithMany()
+                        .HasForeignKey("DndClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.ToolType", null)
+                        .WithMany()
+                        .HasForeignKey("ToolsProficienciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DndClassWeaponType", b =>
+                {
+                    b.HasOne("DNDWiki.Models.DndClass", null)
+                        .WithMany()
+                        .HasForeignKey("DndClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DNDWiki.Models.WeaponType", null)
+                        .WithMany()
+                        .HasForeignKey("WeaponsProficienciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DNDWiki.Models.DndClass", b =>
                 {
-                    b.Navigation("ArmorProficiencies");
-
                     b.Navigation("ClassFeatures");
-
-                    b.Navigation("SavingThrowProficiencies");
-
-                    b.Navigation("SkillProficiencies");
-
-                    b.Navigation("ToolsProficiencies");
-
-                    b.Navigation("WeaponsProficiencies");
-                });
-
-            modelBuilder.Entity("DNDWiki.Models.Spells", b =>
-                {
-                    b.Navigation("Classes");
                 });
 #pragma warning restore 612, 618
         }

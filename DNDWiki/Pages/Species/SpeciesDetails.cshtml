@@ -1,0 +1,40 @@
+﻿@page
+@model DNDWiki.Pages.Species.SpeciesDetailsModel
+@{
+}
+
+<h3>@Model.Specie.Name</h3>
+<a class="btn btn-sm btn-primary" href="/DND/Class/EditClass?ClassId=@Model.Specie.Id">
+    Edytuj
+</a>
+<div>@Model.Specie.Description</div>
+<table border="1">
+    <tr>
+        <td>Speed</td>
+        <td>
+            @Model.Specie.Speed
+        </td>
+    </tr>
+    <tr>
+        <td>Saving Throw Proficiencies</td>
+        <td>
+            @string.Join(", ", Model.Specie.CreatureSizes.Select(x => x.Name))
+        </td>
+    </tr>
+    <tr>
+        <td>Skill Proficiencies</td>
+        <td>
+            @string.Join(", ", Model.Specie.CreatureTypes.Select(x => x.Name))
+        </td>
+    </tr>
+
+</table>
+
+
+
+@foreach (var feature in Model.Specie.Traits)
+{
+    <div>
+        <strong>@feature.Name </strong> <div>@feature.Description</div>
+    </div>
+}

@@ -1,5 +1,6 @@
 using DNDWiki.Data;
 using DNDWiki.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DNDWiki.Pages.Class
 {
+    [Authorize]
     public class EditClassModel : PageModel
     {
         #region InputModels
@@ -21,6 +23,8 @@ namespace DNDWiki.Pages.Class
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public int AbilityId { get; set; }
+            public string AbilityName { get; set; }
             public bool Selected { get; set; }
         }
 
@@ -81,7 +85,7 @@ namespace DNDWiki.Pages.Class
 
             Sources = _context.Sources.ToList();
 
-            var existingClass = _context.DndClasses.Include(x => x.ToolsProficiencies).Include(x => x.SkillProficiencies).Include(x => x.SavingThrowProficiencies).Include(x => x.ClassFeatures)
+            var existingClass = _context.DndClasses.Include(x => x.ToolsProficiencies).Include(x => x.SkillProficiencies).Include(x => x.SavingThrowProficiencies).Include(x => x.ClassFeatures).Include(x => x.WeaponsProficiencies).Include(x => x.ArmorProficiencies)
                 .Where(c => c.Id == ClassId)
                 .FirstOrDefault();
 
@@ -94,13 +98,15 @@ namespace DNDWiki.Pages.Class
             Input.SourceId = existingClass.Source?.Id;
             Input.HitDie = existingClass.HitPointDie;
 
-            Input.SkillProficiencies = _context.Skills
+            Input.SkillProficiencies = _context.Skills.Include(x => x.Ability)
                 .AsEnumerable()
                 .Select(s => new SkillInputModel
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Selected = existingClass.SkillProficiencies.Any(sp => sp.Id == s.Id)
+                    Selected = existingClass.SkillProficiencies.Any(sp => sp.Id == s.Id),
+                    AbilityId = s.AbilityId,
+                    AbilityName = s.Ability.Name
                 })
                 .ToList();
 
@@ -180,7 +186,15 @@ namespace DNDWiki.Pages.Class
                 .AsEnumerable()
                 .Where(a => Input.SavingThrowProficiencies.Any(i => i.Id == a.Id && i.Selected))
                 .ToList();
-            
+            existingClass.ArmorProficiencies = _context.ArmorTrainings
+                .AsEnumerable()
+                .Where(a => Input.ArmorTraining.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
+            existingClass.WeaponsProficiencies = _context.WeaponTypes
+                .AsEnumerable()
+                .Where(a => Input.WeaponProficiency.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
+
             existingClass.ClassFeatures = Input.ClassFeatures
                 .Where(f => !string.IsNullOrWhiteSpace(f.Name) && !string.IsNullOrWhiteSpace(f.Description))
                 .ToList();

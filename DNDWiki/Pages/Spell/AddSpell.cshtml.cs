@@ -1,5 +1,6 @@
 using DNDWiki.Data;
 using DNDWiki.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DNDWiki.Pages.Spell
 {
+    [Authorize]
     public class AddSpellModel : PageModel
     {
         public class SpellInputModel

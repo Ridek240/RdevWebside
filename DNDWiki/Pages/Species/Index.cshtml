@@ -1,15 +1,11 @@
 ﻿@page
-@model DNDWiki.Pages.Class.IndexModel
+@model DNDWiki.Pages.Species.IndexModel
 @{
-    ViewData["Title"] = "Lista klas D&D";
 }
-
-<h1>@ViewData["Title"]</h1>
-
-<a class="btn btn-sm btn-primary" href="/DND/Class/AddClass">
+<a class="btn btn-sm btn-primary" href="/DND/Species/AddSpecies">
     Add
 </a>
-@if (Model.Classes == null || !Model.Classes.Any())
+@if (Model.Species == null || !Model.Species.Any())
 {
     <p>Brak klas do wyświetlenia.</p>
 }
@@ -23,10 +19,10 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var cls in Model.Classes)
+            @foreach (var cls in Model.Species)
             {
                 <tr style="cursor:pointer;"
-                    onclick="location.href='/DND/Class/ClassDetail?ClassId=@cls.Id'">
+                    onclick="location.href='/DND/Species/SpeciesDetails?Id=@cls.Id'">
                     <td>@cls.Name</td>
                     <td>@cls.Source</td>
                 </tr>

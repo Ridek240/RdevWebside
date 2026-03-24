@@ -18,9 +18,41 @@ namespace DNDWiki.Data
         public DbSet<WeaponType> WeaponTypes { get; set; }
         public DbSet<ToolType> ToolTypes { get; set; }
         public DbSet<Spells> Spells { get; set; }
+        public DbSet<CreatureType> CreatureTypes { get; set; }
+        public DbSet<CreatureSize> CreatureSizes { get; set; }
+        public DbSet<Species> Species { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<DndClass>()
+    .HasMany(c => c.SavingThrowProficiencies)
+    .WithMany();
+
+            modelBuilder.Entity<DndClass>()
+                .HasMany(c => c.SkillProficiencies)
+                .WithMany();
+
+            modelBuilder.Entity<DndClass>()
+                .HasMany(c => c.ToolsProficiencies)
+                .WithMany();
+
+            modelBuilder.Entity<DndClass>()
+                .HasMany(c => c.WeaponsProficiencies)
+                .WithMany();
+
+            modelBuilder.Entity<DndClass>()
+                .HasMany(c => c.ArmorProficiencies)
+                .WithMany();
+            modelBuilder.Entity<Species>()
+    .HasMany(c => c.CreatureTypes)
+    .WithMany();
+            modelBuilder.Entity<Species>()
+    .HasMany(c => c.CreatureSizes)
+    .WithMany();
+
+            modelBuilder.Entity<Spells>().HasMany(c => c.Classes).WithMany();
+
             modelBuilder.Entity<Source>().HasData(
             new Source { Id = "PHB24", Name = "Players Handbook 2024" });
 
@@ -110,6 +142,30 @@ namespace DNDWiki.Data
                 new ToolType { Id = 31, Name = "NavigatorsTools" },
                 new ToolType { Id = 32, Name = "PoisonersKit" },
                 new ToolType { Id = 33, Name = "ThievesTools" }
+            );
+            modelBuilder.Entity<CreatureType>().HasData(
+                new CreatureType { Id = 1, Name = "Aberration" },
+                new CreatureType { Id = 2, Name = "Beast" },
+                new CreatureType { Id = 3, Name = "Celestial" },
+                new CreatureType { Id = 4, Name = "Construct" },
+                new CreatureType { Id = 5, Name = "Dragon" },
+                new CreatureType { Id = 6, Name = "Elemental" },
+                new CreatureType { Id = 7, Name = "Fey" },
+                new CreatureType { Id = 8, Name = "Fiend" },
+                new CreatureType { Id = 9, Name = "Giant" },
+                new CreatureType { Id = 10, Name = "Humanoid" },
+                new CreatureType { Id = 11, Name = "Monstrosity" },
+                new CreatureType { Id = 12, Name = "Ooze" },
+                new CreatureType { Id = 13, Name = "Plant" },
+                new CreatureType { Id = 14, Name = "Undead" }
+            );
+            modelBuilder.Entity<CreatureSize>().HasData(
+                new CreatureSize { Id = 1, Name = "Tiny" },
+                new CreatureSize { Id = 2, Name = "Small" },
+                new CreatureSize { Id = 3, Name = "Medium" },
+                new CreatureSize { Id = 4, Name = "Large" },
+                new CreatureSize { Id = 5, Name = "Huge" },
+                new CreatureSize { Id = 6, Name = "Gargantuan" }
             );
         }
     }

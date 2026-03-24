@@ -17,5 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\IndentityShared\IndentityShared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
 
 </Project>
