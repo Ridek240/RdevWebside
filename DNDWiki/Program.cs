@@ -51,6 +51,7 @@ using (var scope = app.Services.CreateScope())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

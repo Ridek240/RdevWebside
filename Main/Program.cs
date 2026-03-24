@@ -41,7 +41,8 @@ builder.Services.AddRazorPages();
 
 // DataProtection
 builder.Services.AddDataProtection()
-    .SetApplicationName("SharedAuthApp");
+    .SetApplicationName("SharedAuthApp")
+    .PersistKeysToFileSystem(new DirectoryInfo("/keys")); 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 // YARP
 var moduleAddress = builder.Environment.IsDevelopment()
@@ -119,7 +120,7 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-
+app.UseForwardedHeaders();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
