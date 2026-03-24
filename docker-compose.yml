@@ -1,6 +1,7 @@
 version: '3.9'
 volumes:
   shared-dp-keys:
+  sql-data:
 
 services:
   main:
@@ -41,3 +42,5 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
