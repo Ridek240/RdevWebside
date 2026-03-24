@@ -35,7 +35,7 @@ builder.Services.AddAuthorization();
 
 // MUSI byæ identyczne jak w Main
 builder.Services.AddDataProtection()
-    .SetApplicationName("SharedAuthApp");
+    .SetApplicationName("SharedAuthApp").PersistKeysToFileSystem(new DirectoryInfo("/keys")); 
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())

@@ -11,6 +11,8 @@ services:
     depends_on:
       - module
       - db
+    volumes:
+      - shared-dp-keys:/keys
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;Encrypt=False;TrustServerCertificate=True;
@@ -22,6 +24,8 @@ services:
     container_name: module
     depends_on:
       - db
+    volumes:
+      - shared-dp-keys:/keys
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=YourStrong!Pass123;Encrypt=False;TrustServerCertificate=True;
