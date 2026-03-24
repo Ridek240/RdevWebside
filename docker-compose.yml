@@ -1,4 +1,6 @@
 version: '3.9'
+volumes:
+  shared-dp-keys:
 
 services:
   main:
