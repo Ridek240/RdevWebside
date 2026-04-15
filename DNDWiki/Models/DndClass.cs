@@ -11,7 +11,7 @@ namespace DNDWiki.Models
         public List<ClassFeature> ClassFeatures { get; set; }
         public List<Ability> SavingThrowProficiencies { get; set; }
         public List<Skill> SkillProficiencies { get; set; }
-        public List<ToolType> ToolsProficiencies { get; set; }
+        public List<ItemTool> ToolsProficiencies { get; set; }
         public List<WeaponType> WeaponsProficiencies { get; set; }
         public List<ArmorTraining> ArmorProficiencies { get; set; }
         public Source Source { get; set; }

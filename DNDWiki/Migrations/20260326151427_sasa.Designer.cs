@@ -4,6 +4,7 @@ using DNDWiki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DNDWiki.Migrations
 {
     [DbContext(typeof(DNDDbContext))]
-    partial class DNDDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260326151427_sasa")]
+    partial class sasa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,7 +457,7 @@ namespace DNDWiki.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemTypes");
+                    b.ToTable("ItemType");
 
                     b.HasData(
                         new
@@ -902,297 +905,223 @@ namespace DNDWiki.Migrations
                         {
                             Id = 1,
                             Description = "",
-                            Name = "Alchemist Supplies",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Alchemist Supplies"
                         },
                         new
                         {
                             Id = 2,
                             Description = "",
-                            Name = "Brewers Supplies",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Brewers Supplies"
                         },
                         new
                         {
                             Id = 3,
                             Description = "",
-                            Name = "Calligraphers Supplies",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Calligraphers Supplies"
                         },
                         new
                         {
                             Id = 4,
                             Description = "",
-                            Name = "Carpenters Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Carpenters Tools"
                         },
                         new
                         {
                             Id = 5,
                             Description = "",
-                            Name = "Cartographers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Cartographers Tools"
                         },
                         new
                         {
                             Id = 6,
                             Description = "",
-                            Name = "Cobblers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Cobblers Tools"
                         },
                         new
                         {
                             Id = 7,
                             Description = "",
-                            Name = "Cooks Utensils",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Cooks Utensils"
                         },
                         new
                         {
                             Id = 8,
                             Description = "",
-                            Name = "Glassblowers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Glassblowers Tools"
                         },
                         new
                         {
                             Id = 9,
                             Description = "",
-                            Name = "Jewelers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Jewelers Tools"
                         },
                         new
                         {
                             Id = 10,
                             Description = "",
-                            Name = "Leatherworkers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Leatherworkers Tools"
                         },
                         new
                         {
                             Id = 11,
                             Description = "",
-                            Name = "Masons Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Masons Tools"
                         },
                         new
                         {
                             Id = 12,
                             Description = "",
-                            Name = "Painters Supplies",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Painters Supplies"
                         },
                         new
                         {
                             Id = 13,
                             Description = "",
-                            Name = "Potters Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Potters Tools"
                         },
                         new
                         {
                             Id = 14,
                             Description = "",
-                            Name = "Smiths Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Smiths Tools"
                         },
                         new
                         {
                             Id = 15,
                             Description = "",
-                            Name = "Tinkers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Tinkers Tools"
                         },
                         new
                         {
                             Id = 16,
                             Description = "",
-                            Name = "Weavers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Weavers Tools"
                         },
                         new
                         {
                             Id = 17,
                             Description = "",
-                            Name = "Woodcarvers Tools",
-                            SourceId = "PHB24",
-                            TypeId = 9
+                            Name = "Woodcarvers Tools"
                         },
                         new
                         {
                             Id = 18,
                             Description = "",
-                            Name = "Bagpipes",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Bagpipes"
                         },
                         new
                         {
                             Id = 19,
                             Description = "",
-                            Name = "Drum",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Drum"
                         },
                         new
                         {
                             Id = 20,
                             Description = "",
-                            Name = "Dulcimer",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Dulcimer"
                         },
                         new
                         {
                             Id = 21,
                             Description = "",
-                            Name = "Flute",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Flute"
                         },
                         new
                         {
                             Id = 22,
                             Description = "",
-                            Name = "Lute",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Lute"
                         },
                         new
                         {
                             Id = 23,
                             Description = "",
-                            Name = "Lyre",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Lyre"
                         },
                         new
                         {
                             Id = 24,
                             Description = "",
-                            Name = "Horn",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Horn"
                         },
                         new
                         {
                             Id = 25,
                             Description = "",
-                            Name = "PanFlute",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "PanFlute"
                         },
                         new
                         {
                             Id = 26,
                             Description = "",
-                            Name = "Shawm",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Shawm"
                         },
                         new
                         {
                             Id = 27,
                             Description = "",
-                            Name = "Viol",
-                            SourceId = "PHB24",
-                            TypeId = 11
+                            Name = "Viol"
                         },
                         new
                         {
                             Id = 28,
                             Description = "",
-                            Name = "Disguise Kit",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Disguise Kit"
                         },
                         new
                         {
                             Id = 29,
                             Description = "",
-                            Name = "Forgery Kit",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Forgery Kit"
                         },
                         new
                         {
                             Id = 30,
                             Description = "",
-                            Name = "Herbalism Kit",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Herbalism Kit"
                         },
                         new
                         {
                             Id = 31,
                             Description = "",
-                            Name = "Navigators Tools",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Navigators Tools"
                         },
                         new
                         {
                             Id = 32,
                             Description = "",
-                            Name = "Poisoners Kit",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Poisoners Kit"
                         },
                         new
                         {
                             Id = 33,
                             Description = "",
-                            Name = "Thieves Tools",
-                            SourceId = "PHB24",
-                            TypeId = 8
+                            Name = "Thieves Tools"
                         },
                         new
                         {
                             Id = 34,
                             Description = "",
-                            Name = "Dice Set",
-                            SourceId = "PHB24",
-                            TypeId = 10
+                            Name = "Dice Set"
                         },
                         new
                         {
                             Id = 35,
                             Description = "",
-                            Name = "Dragonchess Set",
-                            SourceId = "PHB24",
-                            TypeId = 10
+                            Name = "Dragonchess Set"
                         },
                         new
                         {
                             Id = 36,
                             Description = "",
-                            Name = "Playing Card Set",
-                            SourceId = "PHB24",
-                            TypeId = 10
+                            Name = "Playing Card Set"
                         },
                         new
                         {
                             Id = 37,
                             Description = "",
-                            Name = "Three Dragon Ante Set",
-                            SourceId = "PHB24",
-                            TypeId = 10
+                            Name = "Three Dragon Ante Set"
                         });
                 });
 

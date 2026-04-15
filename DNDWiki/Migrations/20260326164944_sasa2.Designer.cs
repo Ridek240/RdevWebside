@@ -4,6 +4,7 @@ using DNDWiki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DNDWiki.Migrations
 {
     [DbContext(typeof(DNDDbContext))]
-    partial class DNDDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260326164944_sasa2")]
+    partial class sasa2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -454,7 +457,7 @@ namespace DNDWiki.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemTypes");
+                    b.ToTable("ItemType");
 
                     b.HasData(
                         new

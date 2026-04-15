@@ -1,0 +1,79 @@
+﻿@page
+@model DNDWiki.Pages.Items.AddItemModel
+@{
+}
+
+@{
+    ViewData["Title"] = "przedmiot";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Walidacja globalna -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Źródło</label>
+        <select asp-for="Input.SourceId" class="form-select" asp-items="@(new SelectList(Model.Sources, "Id", "Name"))">
+            <option value="">-- Wybierz źródło --</option>
+        </select>
+        <span asp-validation-for="Input.SourceId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Input.Name" class="form-label">Nazwa</label>
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Input.Description" class="form-label">Opis</label>
+        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        
+        <div class="row g-2">
+            <div class="col">
+                <label asp-for="Input.Name" class="form-label">Copper</label>
+                <input asp-for="Input.Price.CopperPieces" class="form-control" placeholder="Copper" />
+            </div>
+            <div class="col">
+                <label asp-for="Input.Name" class="form-label">Silver</label>
+                <input asp-for="Input.Price.SilverPieces" class="form-control" placeholder="Silver" />
+            </div>
+            <div class="col">
+                <label asp-for="Input.Name" class="form-label">Gold</label>
+                <input asp-for="Input.Price.GoldPieces" class="form-control" placeholder="Gold" />
+            </div>
+            <div class="col">
+                <label asp-for="Input.Name" class="form-label">Platinum</label>
+                <input asp-for="Input.Price.PlatiniumPieces" class="form-control" placeholder="Platinum" />
+            </div>
+        </div>
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">ItemType</label>
+        <select asp-for="Input.ItemTypeId" class="form-select" asp-items="@(new SelectList(Model.ItemTypes, "Id", "Type"))">
+            <option value="">-- ItemType --</option>
+        </select>
+        <span asp-validation-for="Input.ItemTypeId" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Dodaj przedmiot</button>
+</form>
+

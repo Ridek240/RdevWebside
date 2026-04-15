@@ -45,12 +45,7 @@ namespace DNDWiki.Models
         public string Name { get; set; }
     }
 
-    public class ToolType
-    {
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-    }
+
 
     public class CreatureType
     {

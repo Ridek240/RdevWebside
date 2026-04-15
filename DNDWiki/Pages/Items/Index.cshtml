@@ -1,0 +1,42 @@
+﻿@page
+@model DNDWiki.Pages.Items.IndexModel
+@{
+    ViewData["Title"] = "Items";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a class="btn btn-sm btn-primary" href="/DND/Items/AddItem">
+    Add
+</a>
+@if (Model.Items == null || !Model.Items.Any())
+{
+    <p>Brak klas do wyświetlenia.</p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nazwa klasy</th>
+                <th>Cost</th>
+                <th>Weight</th>
+                <th>Atributes</th>
+                <th>Źródło</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cls in Model.Items)
+            {
+                <tr style="cursor:pointer;"
+                    onclick="location.href='/DND/Items/ClassDetail?ClassId=@cls.Id'">
+                    <td>@cls.Name</td>
+                    <td>@cls.Cost</td>
+                    <td>@cls.Weight</td>
+                    <td>@cls.Weight</td>
+                    <td>@cls.Source</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

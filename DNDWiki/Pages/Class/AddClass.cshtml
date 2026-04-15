@@ -119,20 +119,53 @@
         </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Tools Proficiencies</label>
 
-        @for (int i = 0; i < Model.Input.ToolsProficiencies.Count; i++)
-        {
-            <div class="form-check">
-                <input type="hidden" asp-for="Input.ToolsProficiencies[i].Name" />
-                <input type="hidden" asp-for="Input.ToolsProficiencies[i].Id" />
-                <input type="checkbox"
-                       asp-for="Input.ToolsProficiencies[i].Selected"
-                       class="form-check-input" />
-                <label class="form-check-label">@Model.Input.ToolsProficiencies[i].Name</label>
-            </div>
-        }
+    <div class="mb-3">
+        <label class="form-label">Tools</label>
+
+        <div class="d-flex">
+            @{
+                // Lista unikalnych Ability
+                var tooltypes = Model.Input.ToolsProficiencies
+                .Select(x => new { x.ItemType })
+                .Distinct()
+                .ToList();
+            }
+
+            @foreach (var ability in tooltypes)
+            {
+                <div class="flex-fill border rounded p-2 mx-1">
+
+                    <!-- Nazwa Ability -->
+                    <strong class="d-block text-center mb-2">
+                        @ability.ItemType
+                    </strong>
+
+                    <!-- Skille dla tej Ability -->
+                    @for (int i = 0; i < Model.Input.ToolsProficiencies.Count; i++)
+                    {
+                        var skill = Model.Input.ToolsProficiencies[i];
+
+                        if (skill.ItemType == ability.ItemType)
+                        {
+                            <div class="form-check">
+                                @* ZAWSZE używamy asp-for, żeby binding działał *@
+                                <input type="hidden" asp-for="Input.ToolsProficiencies[i].Name" />
+                                <input type="hidden" asp-for="Input.ToolsProficiencies[i].Id" />
+                                <input type="hidden" asp-for="Input.ToolsProficiencies[i].ItemType" />
+
+
+                                <input type="checkbox"
+                                       asp-for="Input.ToolsProficiencies[i].Selected"
+                                       class="form-check-input" />
+
+                                <label class="form-check-label">@skill.Name</label>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
     </div>
 
     <div class="mb-3">

@@ -32,6 +32,7 @@ namespace DNDWiki.Pages.Class
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public string ItemType { get; set; }
             public bool Selected { get; set; }
         }
         public class WeaponProficiencyInputModel
@@ -85,8 +86,8 @@ namespace DNDWiki.Pages.Class
             Sources = _context.Sources.ToList();
 
 
-            Input.ToolsProficiencies = _context.ToolTypes
-                 .Select(t => new ToolInputModel { Id = t.Id, Name = t.Name, Selected = false })
+            Input.ToolsProficiencies = _context.Items.OfType<ItemTool>().Include(x => x.Type)
+                 .Select(t => new ToolInputModel { Id = t.Id, Name = t.Name, ItemType = t.Type.Type, Selected = false })
                  .ToList();
             Input.SkillProficiencies = _context.Skills.Include(x => x.Ability)
                 .Select(s => new SkillInputModel { Id = s.Id, Name = s.Name, AbilityId = s.AbilityId, AbilityName = s.Ability.Name, Selected = false })
@@ -116,20 +117,20 @@ namespace DNDWiki.Pages.Class
                 .ToList();
 
             var SavingThrowProficiencies = _context.Abilities.AsEnumerable()
-                    .Where(a => Input.SavingThrowProficiencies.Any(i => i.Id == a.Id && i.Selected))
-                    .ToList();
+                .Where(a => Input.SavingThrowProficiencies.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
             var SkillProficiencies = _context.Skills.AsEnumerable()
-        .Where(a => Input.SkillProficiencies.Any(i => i.Id == a.Id && i.Selected))
-        .ToList();
+                .Where(a => Input.SkillProficiencies.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
             var ArmorTraining = _context.ArmorTrainings.AsEnumerable()
-        .Where(a => Input.ArmorTraining.Any(i => i.Id == a.Id && i.Selected))
-        .ToList();
+                .Where(a => Input.ArmorTraining.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
             var WeaponProf = _context.WeaponTypes.AsEnumerable()
-        .Where(a => Input.WeaponProficiency.Any(i => i.Id == a.Id && i.Selected))
-        .ToList();
-            var ToolsProficiencies = _context.ToolTypes.AsEnumerable()
-        .Where(a => Input.ToolsProficiencies.Any(i => i.Id == a.Id && i.Selected))
-        .ToList();
+                .Where(a => Input.WeaponProficiency.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
+            var ToolsProficiencies = _context.Items.OfType<ItemTool>().AsEnumerable()
+                .Where(a => Input.ToolsProficiencies.Any(i => i.Id == a.Id && i.Selected))
+                .ToList();
             var newClass = new DndClass
             {
                 Name = Input.Name,

@@ -32,6 +32,7 @@ namespace DNDWiki.Pages.Class
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public string ItemType { get; set; }
             public bool Selected { get; set; }
         }
         public class WeaponProficiencyInputModel
@@ -110,13 +111,14 @@ namespace DNDWiki.Pages.Class
                 })
                 .ToList();
 
-            Input.ToolsProficiencies = _context.ToolTypes
+            Input.ToolsProficiencies = _context.Items.OfType<ItemTool>().Include(x => x.Type)
                 .AsEnumerable()
                 .Select(t => new ToolInputModel
                 {
                     Id = t.Id,
                     Name = t.Name,
-                    Selected = existingClass.ToolsProficiencies.Any(tp => tp.Id == t.Id)
+                    Selected = existingClass.ToolsProficiencies.Any(tp => tp.Id == t.Id),
+                    ItemType = t.Type.Type
                 })
                 .ToList();
 
@@ -177,7 +179,7 @@ namespace DNDWiki.Pages.Class
                 .Where(s => Input.SkillProficiencies.Any(i => i.Id == s.Id && i.Selected))
                 .ToList();
 
-            existingClass.ToolsProficiencies = _context.ToolTypes
+            existingClass.ToolsProficiencies = _context.Items.OfType<ItemTool>()
                 .AsEnumerable()
                 .Where(t => Input.ToolsProficiencies.Any(i => i.Id == t.Id && i.Selected))
                 .ToList();
