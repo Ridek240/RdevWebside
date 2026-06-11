@@ -23,7 +23,7 @@ builder.Services.AddAuthentication("Identity.Application")
             var returnUrl = context.Request.Path + context.Request.QueryString;
 
             var redirectUrl =
-                $"{context.Request.Scheme}://{context.Request.Host}/Identity/Account/Login" +
+                $"http://130.61.175.88:8080/Identity/Account/Login" +
                 "?ReturnUrl=" + Uri.EscapeDataString("/DND" + returnUrl);
 
             context.Response.Redirect(redirectUrl);
