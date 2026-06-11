@@ -8,9 +8,9 @@ services:
     build:
       context: .
       dockerfile: Main/Dockerfile
-    container_name: main
+    container_name: RDevWebside_main
     ports:
-      - "5001:80"
+      - "8080:80"
     depends_on:
       - module
       - db
@@ -24,7 +24,7 @@ services:
     build:
       context: .
       dockerfile: DNDWiki/Dockerfile
-    container_name: module
+    container_name: RDevWebside_DNDmodule
     depends_on:
       - db
     volumes:
@@ -36,7 +36,7 @@ services:
 
   db:
     image: mcr.microsoft.com/azure-sql-edge
-    container_name: db
+    container_name: RDevWebside_DatabaseDeafault
     environment:
       - SA_PASSWORD=YourStrong!Pass123
       - ACCEPT_EULA=Y
