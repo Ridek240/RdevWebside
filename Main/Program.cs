@@ -1,6 +1,7 @@
 using IndentityShared.Data;
 using IndentityShared.Models;
 using Main.Areas.Identity.Services;
+using Main.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -74,7 +75,7 @@ builder.Services.AddReverseProxy()
                 }
             }
         });
-
+//rejestracja serwisów
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
