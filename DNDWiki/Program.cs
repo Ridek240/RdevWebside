@@ -22,8 +22,9 @@ builder.Services.AddAuthentication("Identity.Application")
         {
             var returnUrl = context.Request.Path + context.Request.QueryString;
 
-            var redirectUrl = "$\"{Request.Scheme}://{Request.Host}/Identity/Account/Login"
-                + "?ReturnUrl=" + Uri.EscapeDataString("/DND" + returnUrl);
+            var redirectUrl =
+                $"{context.Request.Scheme}://{context.Request.Host}/Identity/Account/Login" +
+                "?ReturnUrl=" + Uri.EscapeDataString("/DND" + returnUrl);
 
             context.Response.Redirect(redirectUrl);
             return Task.CompletedTask;
