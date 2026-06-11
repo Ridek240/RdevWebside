@@ -76,3 +76,33 @@ body {
         background-color: #2962ff;
         border-color: #2962ff;
     }
+
+
+.form-control {
+    background-color: #000000; /* szare t³o */
+    color: #ffffff;
+    border: 1px solid #c0c0c0;
+}
+
+    .form-control:focus {
+        background-color: #000000;
+        color: #ffffff;
+        border-color: #ffffff;
+        box-shadow: none;
+    }
+
+    .form-control:hover {
+        background-color: #000000;
+        color: #ffffff;
+        border-color: #ffffff;
+        box-shadow: none;
+    }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #000000 inset !important;
+    -webkit-text-fill-color: #808080 !important;
+    caret-color: #808080;
+}

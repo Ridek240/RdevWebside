@@ -3,37 +3,7 @@
 @{
     ViewData["Title"] = "Register";
 }
-<style>
 
-    .form-control {
-        background-color: #000000; /* szare tło */
-        color: #ffffff;
-        border: 1px solid #c0c0c0;
-    }
-
-        .form-control:focus {
-        background-color: #000000;
-        color: #ffffff;
-        border-color: #ffffff;
-        box-shadow: none;
-    }
-
-        .form-control:hover {
-            background-color: #000000;
-            color: #ffffff;
-            border-color: #ffffff;
-            box-shadow: none;
-        }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    textarea:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px #000000 inset !important;
-        -webkit-text-fill-color: #808080 !important;
-        caret-color: #808080;
-    }
-</style>
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
@@ -51,21 +21,25 @@
             <div class="form-floating mb-3">
                 <input asp-for="Input.Login" class="form-control" autocomplete="username" aria-required="true" placeholder="Username" />
                 <label asp-for="Input.Login">Username</label>
+                <span asp-validation-for="Input.Login" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.Password">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-3">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
             <div class="form-floating mb-3">
                 <input asp-for="Input.InviteToken" class="form-control" autocomplete="invcode" aria-required="true" placeholder="password" />
                 <label asp-for="Input.InviteToken">InviteToken</label>
+                <span asp-validation-for="Input.InviteToken" class="text-danger"></span>
             </div>
 
             <button type="submit" class="w-100 btn btn-primary btn-lg">
